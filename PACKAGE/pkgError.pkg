@@ -31,15 +31,15 @@ IS
 			  FROM errorcodes e
 			 WHERE e.errorcode = codein;
 
-		errorrec   errorcur%ROWTYPE;
+		errorRec   errorcur%ROWTYPE;
 	BEGIN
 		OPEN errorcur;
 
-		FETCH errorcur	 INTO errorrec;
+		FETCH errorcur	 INTO errorRec;
 
 		CLOSE errorcur;
 
-		RETURN errorrec.errordescription;
+		RETURN errorRec.errordescription;
 	END;
 
 	--Функция проверки минимального описания или наименования
