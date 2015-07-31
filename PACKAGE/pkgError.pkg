@@ -1,0 +1,77 @@
+CREATE OR REPLACE PACKAGE pkgerror
+/* Formatted on 31.07.2015 12:05:22 (QP5 v5.262) */
+IS
+	num_short_text	 CONSTANT NUMBER := -20999;
+	err_short_text			  EXCEPTION;
+	PRAGMA EXCEPTION_INIT (err_short_text, -20999);
+
+	FUNCTION showErrorDescription (codein IN INTEGER)
+		RETURN errorCodes.errordescription%TYPE;
+
+	FUNCTION checkLenght (checkvalue IN VARCHAR, lengthin IN NUMBER)
+		RETURN BOOLEAN;
+
+	PROCEDURE addError (errorcode		   IN NUMBER,
+						errortype		   IN VARCHAR2,
+						errortext		   IN VARCHAR2,
+						errordescription   IN VARCHAR2);
+END pkgerror;
+/
+CREATE OR REPLACE PACKAGE BODY pkgerror
+/* Formatted on 31.07.2015 12:01:08 (QP5 v5.262) */
+IS
+
+	--Функция возвращает полный текст ошибки
+	FUNCTION showErrorDescription (codein IN INTEGER)
+		RETURN errorcodes.errordescription%TYPE
+	IS
+		CURSOR errorcur
+		IS
+			SELECT *
+			  FROM errorcodes e
+			 WHERE e.errorcode = codein;
+
+		errorrec   errorcur%ROWTYPE;
+	BEGIN
+		OPEN errorcur;
+
+		FETCH errorcur	 INTO errorrec;
+
+		CLOSE errorcur;
+
+		RETURN errorrec.errordescription;
+	END;
+
+	--Функция проверки минимального описания или наименования
+	FUNCTION checkLenght (checkvalue IN VARCHAR, lengthin IN NUMBER)
+		RETURN BOOLEAN
+	IS
+	BEGIN
+		IF LENGTH (TRIM (checklenght.checkvalue)) < checklenght.lengthin
+		THEN
+			RETURN FALSE;
+		ELSE
+			RETURN TRUE;
+		END IF;
+	END;
+
+	PROCEDURE addError (errorcode		   IN NUMBER,
+						errortype		   IN VARCHAR2,
+						errortext		   IN VARCHAR2,
+						errordescription   IN VARCHAR2)
+	IS
+	BEGIN
+		--Проверяем, что б именна были не короткими
+		IF (	checklenght (errortype, 4)
+			AND checklenght (errortext, 5)
+			AND checklenght (errordescription, 10))
+		THEN
+			INSERT INTO errorcodes VALUES (
+            		errorcode, errortype, errortext, errordescription);
+		ELSE
+			raise_application_error (pkgerror.num_short_text,
+									 showerrordescription (num_short_text));
+		END IF;
+	END;
+END;
+/
