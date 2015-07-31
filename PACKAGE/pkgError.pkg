@@ -25,19 +25,19 @@ IS
 	FUNCTION showErrorDescription (codein IN INTEGER)
 		RETURN errorcodes.errordescription%TYPE
 	IS
-		CURSOR errorcur
+		CURSOR errorCur
 		IS
 			SELECT *
 			  FROM errorcodes e
 			 WHERE e.errorcode = codein;
 
-		errorRec   errorcur%ROWTYPE;
+		errorRec   errorCur%ROWTYPE;
 	BEGIN
-		OPEN errorcur;
+		OPEN errorCur;
 
-		FETCH errorcur	 INTO errorRec;
+		FETCH errorCur	 INTO errorRec;
 
-		CLOSE errorcur;
+		CLOSE errorCur;
 
 		RETURN errorRec.errordescription;
 	END;
