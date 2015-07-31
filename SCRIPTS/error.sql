@@ -18,14 +18,14 @@ BEGIN
     
     EXCEPTION 
     	WHEN short_name THEN 
-        	DBMS_OUTPUT.Put_Line( 'Слишком короткое имя' );
+        	DBMS_OUTPUT.Put_Line( 'Г‘Г«ГЁГёГЄГ®Г¬ ГЄГ®Г°Г®ГІГЄГ®ГҐ ГЁГ¬Гї' );
 		WHEN OTHERS THEN 
         	IF SQLCODE = 100 THEN 
-            DBMS_OUTPUT.Put_Line( 'Ничего не найдено' ); 
+            DBMS_OUTPUT.Put_Line( 'ГЌГЁГ·ГҐГЈГ® Г­ГҐ Г­Г Г©Г¤ГҐГ­Г®' ); 
             END IF;  
    
 END;
 
 BEGIN 
-add_ingredient('tes1'); 
+add_ingredient('tes2'); 
 END;     
